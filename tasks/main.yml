@@ -1,2 +1,36 @@
 ---
 # tasks file for vault
+
+- name: Include distribution specific variables
+  include_vars: "{{ ansible_distribution }}.yml"
+  tags: vault
+
+- include: CentOS.yml
+  when: ansible_distribution == "CentOS"
+  tags: vault
+
+- include: Ubuntu.yml
+  when: ansible_distribution == "Ubuntu"
+  tags: vault
+
+- name: Download Vault
+  get_url: >
+    url={{ vault_url }}
+    dest={{ vault_download_dir }}/vault.zip
+    sha256sum={{ vault_sha256sum }}
+  tags: vault
+
+- name: Create Vault installation directory
+  file: >
+     path={{ vault_install_dir }}
+     owner={{ vault_install_dir_owner }}
+     group={{ vault_install_dir_group }}
+     mode={{ vault_install_dir_mode }}
+     state=directory
+  tags: vault
+
+- name: Unzip Vault to installation directory
+  command: unzip {{ vault_download_dir }}/vault.zip -d {{ vault_install_dir }}
+  args:
+    creates: "{{ vault_install_dir }}/vault"
+  tags: vault

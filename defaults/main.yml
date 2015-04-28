@@ -1,2 +1,5 @@
 ---
 # defaults file for vault
+
+vault_version: 0.1.0
+vault_sha256sum: f6a8674a54f5b6288ba705bd21843cb1c848107e9ff6e7c17b4cc82cdb46789a

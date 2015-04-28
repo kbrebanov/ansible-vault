@@ -1,2 +1,9 @@
 ---
 # vars file for vault
+
+vault_url: https://dl.bintray.com/mitchellh/vault/vault_{{ vault_version }}_linux_amd64.zip
+vault_download_dir: /root
+vault_install_dir: /opt/vault
+vault_install_dir_owner: root
+vault_install_dir_group: root
+vault_install_dir_mode: "0755"
