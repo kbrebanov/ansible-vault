@@ -15,8 +15,8 @@ Role Variables
 
 | Name             | Default                                                          | Description                  |
 |------------------|------------------------------------------------------------------|------------------------------|
-| vault_version    | 0.1.2                                                            | Version of Vault to install  |
-| vault_sha256sum  | 12c28cf7d6b6052c24817072fb95d4cfa2a391b507c705e960faf11afb5ee6ad | SHA 256 checksum of package  |
+| vault_version    | 0.2.0                                                            | Version of Vault to install  |
+| vault_sha256sum  | b4b64fcea765ebfc7cdbae9cdd2c32bff130ca51f15b9cf47194f112fd5515cf | SHA 256 checksum of package  |
 
 Dependencies
 ------------
