@@ -1,7 +1,7 @@
 vault
 =====
 
-[![Ansible Galaxy](https://img.shields.io/badge/galaxy-kbrebanov.vault-660198.svg)](https://galaxy.ansible.com/list#/roles/3561)
+[![Ansible Role](https://img.shields.io/ansible/role/3561.svg)](https://galaxy.ansible.com/list#/roles/3561)
 
 Installs Vault
 
