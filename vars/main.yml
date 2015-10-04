@@ -3,7 +3,10 @@
 
 vault_url: https://dl.bintray.com/mitchellh/vault/vault_{{ vault_version }}_linux_amd64.zip
 vault_download_dir: /root
-vault_install_dir: /opt/vault
-vault_install_dir_owner: root
-vault_install_dir_group: root
-vault_install_dir_mode: "0755"
+vault_install_dir: /usr/local/bin
+vault_config_dir: /etc/vault.d
+vault_pid_file: /var/run/vault.pid
+vault_log_file: /var/log/vault.log
+vault_user: vault
+vault_group: vault
+vault_service_name: vault

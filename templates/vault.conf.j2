@@ -1,0 +1,19 @@
+description "Service for vault"
+author "Kevin Brebanov"
+
+start on filesystem or runlevel [2345]
+stop on shutdown
+
+reload signal SIGHUP
+
+respawn
+respawn limit 10 10
+kill timeout 10
+
+script
+    exec start-stop-daemon --start --chuid {{ vault_user }} --group {{ vault_group }} --pidfile {{ vault_pid_file }} --make-pidfile --exec {{ vault_install_dir }}/vault -- server -config {{ vault_config_dir }}/vault.hcl > {{ vault_log_file }} 2>&1
+end script
+
+post-stop script
+    rm -f {{ vault_pid_file }}
+end script

@@ -1,0 +1,143 @@
+{% if vault_disable_mlock %}
+disable_mlock = true
+{% else %}
+disable_mlock = false
+{% endif %}
+default_lease_ttl = "{{ vault_default_lease_ttl }}"
+max_lease_ttl = "{{ vault_max_lease_ttl }}"
+
+listener "tcp" {
+  address = "{{ vault_listener_tcp_address }}"
+{% if vault_listener_tcp_tls_disable %}
+  tls_disable = 1
+{% else %}
+  tls_disable = 0
+{% endif %}
+{% if vault_listener_tcp_tls_cert_file and not vault_listener_tcp_tls_disable %}
+  tls_cert_file = "{{ vault_listener_tcp_tls_cert_file }}"
+{% endif %}
+{% if vault_listener_tcp_tls_key_file and not vault_listener_tcp_tls_disable %}
+  tls_key_file = "{{ vault_listener_tcp_tls_key_file }}"
+{% endif %}
+{% if vault_listener_tcp_tls_min_version and not vault_listener_tcp_tls_disable %}
+  tls_min_version = "{{ vault_listener_tcp_tls_min_version }}"
+{% endif %}
+}
+
+{% if vault_backend == "consul" %}
+backend "consul" {
+{% if vault_backend_consul_advertise_addr %}
+  advertise_addr = "{{ vault_backend_consul_advertise_addr }}"
+{% endif %}
+  path = "{{ vault_backend_consul_path }}"
+{% if vault_backend_consul_address %}
+  address = "{{ vault_backend_consul_address }}"
+{% endif %}
+{% if vault_backend_consul_scheme %}
+  scheme = "{{ vault_backend_consul_scheme }}"
+{% endif %}
+{% if vault_backend_consul_datacenter %}
+  datacenter = "{{ vault_backend_consul_datacenter }}"
+{% endif %}
+{% if vault_backend_consul_token %}
+  token = "{{ vault_backend_consul_token }}"
+{% endif %}
+{% if vault_backend_consul_tls_skip_verify %}
+  tls_skip_verify = 1
+{% else %}
+  tls_skip_verify = 0
+{% endif %}
+{% if vault_backend_consul_tls_ca_file %}
+  tls_ca_file = "{{ vault_backend_consul_tls_ca_file }}"
+{% endif %}
+{% if vault_backend_consul_tls_cert_file %}
+  tls_cert_file = "{{ vault_backend_consul_tls_cert_file }}"
+{% endif %}
+{% if vault_backend_consul_tls_key_file %}
+  tls_key_file = "{{ vault_backend_consul_tls_key_file }}"
+{% endif %}
+}
+{% endif %}
+
+{% if vault_backend == "zookeeper" %}
+backend "zookeeper" {
+{% if vault_backend_zookeeper_advertise_addr %}
+  advertise_addr = "{{ vault_backend_zookeeper_advertise_addr }}"
+{% endif %}
+  path = "{{ vault_backend_zookeeper_path }}"
+  address = "{{ vault_backend_zookeeper_address }}"
+}
+{% endif %}
+
+{% if vault_backend == "etcd" %}
+backend "etcd" {
+{% if vault_backend_etcd_advertise_addr %}
+  advertise_addr = "{{ vault_backend_etcd_advertise_addr }}"
+{% endif %}
+  path = "{{ vault_backend_etcd_path }}"
+  address = "{{ vault_backend_etcd_address }}"
+}
+{% endif %}
+
+{% if vault_backend == "s3" %}
+backend "s3" {
+{% if vault_backend_s3_advertise_addr %}
+  advertise_addr = "{{ vault_backend_s3_advertise_addr }}"
+{% endif %}
+  bucket = "{{ vault_backend_s3_bucket }}"
+{% if vault_backend_s3_access_key %}
+  access_key = "{{ vault_backend_s3_access_key }}"
+{% endif %}
+{% if vault_backend_s3_secret_key %}
+  secret_key = "{{ vault_backend_s3_secret_key }}"
+{% endif %}
+{% if vault_backend_s3_session_token %}
+  session_token = "{{ vault_backend_s3_session_token }}"
+{% endif %}
+{% if vault_backend_s3_region %}
+  region = "{{ vault_backend_s3_region }}"
+{% endif %}
+}
+{% endif %}
+
+{% if vault_backend == "mysql" %}
+backend "mysql" {
+{% if vault_backend_mysql_advertise_addr %}
+  advertise_addr = "{{ vault_backend_mysql_advertise_addr }}"
+{% endif %}
+  username = "{{ vault_backend_mysql_username }}"
+  password = "{{ vault_backend_mysql_password }}"
+  address = "{{ vault_backend_mysql_address }}"
+  database = "{{ vault_backend_mysql_database }}"
+  table = "{{ vault_backend_mysql_table }}"
+{% if vault_backend_mysql_tls_ca_file %}
+  tls_ca_file = "{{ vault_backend_mysql_tls_ca_file }}"
+{% endif %}
+}
+{% endif %}
+
+{% if vault_backend == "inmem" %}
+backend "inmem"
+{% endif %}
+
+{% if vault_backend == "file" %}
+backend "file" {
+  path = "{{ vault_backend_file_path }}"
+}
+{% endif %}
+
+{% if vault_telemetry %}
+telemetry {
+{% if vault_telemetry_statsite_address %}
+  statsite_address = "{{ vault_telemetry_statsite_address }}"
+{% endif %}
+{% if vault_telemetry_statsd_address %}
+  statsd_address = "{{ vault_telemetry_statsd_address }}"
+{% endif %}
+{% if vault_telemetry_disable_hostname %}
+  disable_hostname = true
+{% else %}
+  disable_hostname = false
+{% endif %}
+}
+{% endif %}
