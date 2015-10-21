@@ -1,8 +1,8 @@
 ---
 # defaults file for vault
 
-vault_version: 0.3.0
-vault_sha256sum: 30b8953e98059d1e8d97f6a164aa574a346a58caf9c5c74a911056f42fbef4d5
+vault_version: 0.3.1
+vault_sha256sum: 4005f0ae1bd88ad2676859430209129ed13bc3ade6b64fcf40cc3a6d4d9469e7
 
 vault_backend: consul
 vault_disable_mlock: false

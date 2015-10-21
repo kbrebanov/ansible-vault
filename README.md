@@ -15,8 +15,8 @@ Role Variables
 
 | Name                                   | Default                                                          | Description                                                                                                                   |
 |----------------------------------------|------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
-| vault_version                          | 0.3.0                                                            | Version of Vault to install                                                                                                   |
-| vault_sha256sum                        | 30b8953e98059d1e8d97f6a164aa574a346a58caf9c5c74a911056f42fbef4d5 | SHA 256 checksum of package                                                                                                   |
+| vault_version                          | 0.3.1                                                            | Version of Vault to install                                                                                                   |
+| vault_sha256sum                        | 4005f0ae1bd88ad2676859430209129ed13bc3ade6b64fcf40cc3a6d4d9469e7 | SHA 256 checksum of package                                                                                                   |
 | vault_backend                          | consul                                                           | Configures the storage backend where Vault data is stored                                                                     |
 | vault_disable_mlock                    | false                                                            | If true, this will disable the server from executing the mlock syscall to prevent memory from being swapped to disk           |
 | vault_default_lease_ttl                | "720h"                                                           | Configures the default lease duration for tokens and secrets, specified in hours                                              |
