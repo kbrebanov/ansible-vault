@@ -8,7 +8,7 @@ Installs and configures Vault
 Requirements
 ------------
 
-This role requires Ansible 1.4 or higher.
+This role requires Ansible 1.6 or higher.
 
 Role Variables
 --------------
