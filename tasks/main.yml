@@ -69,6 +69,12 @@
   notify: restart vault
   tags: vault
 
+- name: Give vault access to mlock syscall
+  capabilities: >
+    path={{ vault_install_dir }}/vault
+    capability='cap_ipc_lock=+ep'
+    state=present
+
 - name: Ensure Vault service is started and enabled on boot
   service: name={{ vault_service_name }} state=started enabled=yes
   tags: vault
