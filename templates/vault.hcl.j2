@@ -117,7 +117,7 @@ backend "mysql" {
 {% endif %}
 
 {% if vault_backend == "inmem" %}
-backend "inmem"
+backend "inmem" {}
 {% endif %}
 
 {% if vault_backend == "file" %}
