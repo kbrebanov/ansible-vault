@@ -70,7 +70,7 @@
   tags: vault
 
 - name: Ensure libcap2-bin is installed
-  package: name=libcap2-bin state=installed
+  apt: name=libcap2-bin state=installed
 
 - name: Give vault access to mlock syscall
   capabilities: >
