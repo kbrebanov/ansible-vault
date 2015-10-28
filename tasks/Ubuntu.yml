@@ -1,2 +1,4 @@
 ---
 # tasks file for vault (Ubuntu specific)
+- name: Install libcap2-bin
+  apt: name=libcap2-bin state=latest

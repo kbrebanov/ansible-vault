@@ -69,9 +69,6 @@
   notify: restart vault
   tags: vault
 
-- name: Ensure libcap2-bin is installed
-  apt: name=libcap2-bin state=installed
-
 - name: Give vault access to mlock syscall
   capabilities: >
     path={{ vault_install_dir }}/vault
