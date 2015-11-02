@@ -10,8 +10,6 @@ listener "tcp" {
   address = "{{ vault_listener_tcp_address }}"
 {% if vault_listener_tcp_tls_disable %}
   tls_disable = 1
-{% else %}
-  tls_disable = 0
 {% endif %}
 {% if vault_listener_tcp_tls_cert_file and not vault_listener_tcp_tls_disable %}
   tls_cert_file = "{{ vault_listener_tcp_tls_cert_file }}"
