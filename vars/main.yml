@@ -1,7 +1,7 @@
 ---
 # vars file for vault
 
-vault_url: https://dl.bintray.com/mitchellh/vault/vault_{{ vault_version }}_linux_amd64.zip
+vault_url: https://releases.hashicorp.com/vault/{{ vault_version }}/vault_{{ vault_version }}_linux_amd64.zip
 vault_download_dir: /root
 vault_install_dir: /usr/local/bin
 vault_config_dir: /etc/vault.d
