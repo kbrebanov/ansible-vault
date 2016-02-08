@@ -1,7 +1,8 @@
 vault
 =====
 
-[![Ansible Role](https://img.shields.io/ansible/role/3561.svg)](https://galaxy.ansible.com/list#/roles/3561)
+[![Build Status](https://travis-ci.org/kbrebanov/ansible-vault.svg?branch=ma
+ster)](https://travis-ci.org/kbrebanov/ansible-vault)
 
 Installs and configures Vault
 
