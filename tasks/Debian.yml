@@ -1,0 +1,15 @@
+---
+# tasks file for vault (Ubuntu specific)
+- name: Install libcap2-bin
+  apt: name=libcap2-bin state=latest
+  tags: vault
+
+- name: Create Vault upstart configuration
+  template: >
+    src=vault.conf.j2
+    dest=/etc/init/vault.conf
+    owner=root
+    group=root
+    mode=0644
+  notify: restart vault
+  tags: vault

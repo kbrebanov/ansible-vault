@@ -1,0 +1,20 @@
+---
+# tasks file for vault (CentOS specific)
+- name: copy vault systemd script
+  template: >
+    src=templates/vault.systemd.j2
+    dest=/etc/systemd/system/vault.service
+    owner=root
+    group=root
+    mode=0644
+  when: vault_use_systemd
+  register: write_systemd_configuration
+  tags: vault
+  notify:
+    - reload systemd
+    - restart consul
+
+- name: reload systemd configuration
+  command: systemctl daemon-reload
+  when: write_systemd_configuration|changed
+  tags: vault

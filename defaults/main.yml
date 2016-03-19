@@ -55,3 +55,6 @@ vault_listener_tcp_tls_min_version: tls12
 vault_telemetry_statsite_address: ''
 vault_telemetry_statsd_address: ''
 vault_telemetry_disable_hostname: false
+
+# Set to true on CentOS7/RedHat 7
+vault_use_systemd: false
