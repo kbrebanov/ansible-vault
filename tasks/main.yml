@@ -72,7 +72,7 @@
 - name: Give vault access to mlock syscall
   capabilities: >
     path={{ vault_install_dir }}/vault
-    capability='cap_ipc_lock=+ep'
+    capability='cap_ipc_lock+ep'
     state=present
 
 - name: Ensure Vault service is started and enabled on boot
