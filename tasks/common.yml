@@ -1,0 +1,36 @@
+---
+- name: Create Vault group
+  group: name={{ vault_group }} system=yes state=present
+  tags: vault
+
+- name: Create Vault user
+  user: >
+    name={{ vault_user }}
+    shell=/bin/false
+    createhome=no
+    group={{ vault_group }}
+    system=yes
+    state=present
+  tags: vault
+
+- name: Download Vault
+  get_url: >
+    url={{ vault_url }}
+    dest={{ vault_download_dir }}/vault.zip
+    sha256sum={{ vault_sha256sum }}
+  tags: vault
+
+- name: Unzip Vault to installation directory
+  command: unzip {{ vault_download_dir }}/vault.zip -d {{ vault_install_dir }}
+  args:
+    creates: "{{ vault_install_dir }}/vault"
+  tags: vault
+
+- name: Create Vault configuration directory
+  file: >
+    path={{ vault_config_dir }}
+    owner=root
+    group=root
+    mode=0755
+    state=directory
+  tags: vault

@@ -1,0 +1,17 @@
+[Unit]
+Description=Vault Server
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+Environment="GOMAXPROCS=`nproc`"
+Restart=on-failure
+User={{ vault_user }}
+Group={{ vault_group }}
+PIDFile={{ vault_pid_file }}
+ExecStart={{ vault_install_dir }}/vault server -config {{ vault_config_dir }}/vault.hcl > {{ vault_log_file }} 2>&1
+ExecReload=/bin/kill -HUP $MAINPID
+KillSignal=SIGINT
+
+[Install]
+WantedBy=multi-user.target
