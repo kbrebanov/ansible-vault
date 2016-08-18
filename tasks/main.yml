@@ -5,14 +5,6 @@
   include_vars: "{{ ansible_distribution }}.yml"
   tags: vault
 
-- include: CentOS.yml
-  when: ansible_distribution == "CentOS"
-  tags: vault
-
-- include: Ubuntu.yml
-  when: ansible_distribution == "Ubuntu"
-  tags: vault
-
 - name: Create Vault group
   group: name={{ vault_group }} system=yes state=present
   tags: vault
@@ -27,36 +19,93 @@
     state=present
   tags: vault
 
-- name: Download Vault
-  get_url: >
-    url={{ vault_url }}
-    dest={{ vault_download_dir }}/vault.zip
-    sha256sum={{ vault_sha256sum }}
-  tags: vault
-
-- name: Unzip Vault to installation directory
-  command: unzip {{ vault_download_dir }}/vault.zip -d {{ vault_install_dir }}
-  args:
-    creates: "{{ vault_install_dir }}/vault"
-  tags: vault
-
-- name: Create Vault configuration directory
+- name: Create Vault directories
   file: >
-    path={{ vault_config_dir }}
+    state=directory
+    path={{ item }}
     owner=root
     group=root
     mode=0755
+  with_items:
+    - "{{ vault_install_dir }}"
+    - "{{ vault_config_dir }}"
+  tags: vault
+
+# Check before creating log dir to prevent aggressively overwriting permissions
+- name: Check for log directory
+  stat: >
+    path={{ vault_log_file|dirname }}
+  register: logdir
+
+- name: Create log directory if it does not exist
+  file: >
     state=directory
+    path={{ vault_log_file|dirname }}
+    owner={{ vault_user }}
+    group={{ vault_group }}
+  when: not logdir.stat.exists
+
+- name: Touch log file
+  file: >
+    state=touch
+    path={{ vault_log_file }}
+    owner={{ vault_user }}
+    group={{ vault_group }}
+  changed_when: false
+
+- name: Check Vault archive stat
+  stat: path={{ vault_download_dir }}/{{ vault_archive }}
+  register: vault_archive_stat
+
+- name: Download Vault
+  get_url: >
+    url={{ vault_url }}
+    dest={{ vault_download_dir }}/{{ vault_archive }}
+    sha256sum={{ vault_sha256sum }}
+  when: not vault_archive_stat.stat.exists
+  tags: vault
+
+- name: Unzip Vault to installation directory
+  unarchive: >
+    src={{ vault_download_dir }}/{{ vault_archive }}
+    dest={{ vault_install_dir }}
+    copy=no
+    creates={{ vault_install_dir }}/vault
+  tags: vault
+
+- name: Install libcap2-bin
+  apt: name=libcap2-bin state=latest
+  when: ansible_os_family == "Debian"
   tags: vault
 
 - name: Create Vault upstart configuration
   template: >
-    src=vault.conf.j2
+    src={{ ansible_os_family }}-vault.conf.j2
     dest=/etc/init/vault.conf
     owner=root
     group=root
     mode=0644
+  when: vault_service_mgr == "upstart"
   notify: restart vault
+  tags: vault
+
+- name: Create Vault systemd configuration
+  template: >
+    src=templates/vault.systemd.j2
+    dest=/etc/systemd/system/vault.service
+    owner=root
+    group=root
+    mode=0644
+  when: vault_service_mgr == "systemd"
+  register: write_systemd_configuration
+  tags: vault
+  notify:
+    - reload systemd
+    - restart vault
+
+- name: Reload systemd configuration
+  command: systemctl daemon-reload
+  when: write_systemd_configuration|changed
   tags: vault
 
 - name: Create Vault configuration file
