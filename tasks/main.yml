@@ -69,6 +69,28 @@
   notify: restart vault
   tags: vault
 
+- name: Copy Vault TLS certificate
+  copy: >
+    dest="{{ vault_listener_tcp_tls_cert_file }}"
+    src="{{ vault_listener_tcp_tls_cert_local_file }}"
+    owner={{ vault_user }}
+    group={{ vault_group }}
+    mode=0644
+  notify: restart vault
+  when: vault_listener_tcp_tls_cert_file and vault_listener_tcp_tls_cert_local_file
+  tags: vault
+
+- name: Copy Vault TLS key
+  copy: >
+    dest="{{ vault_listener_tcp_tls_key_file }}"
+    src="{{ vault_listener_tcp_tls_key_local_file }}"
+    owner={{ vault_user }}
+    group={{ vault_group }}
+    mode=0600
+  notify: restart vault
+  when: vault_listener_tcp_tls_key_file and vault_listener_tcp_tls_key_local_file
+  tags: vault
+
 - name: Give vault access to mlock syscall
   capabilities: >
     path={{ vault_install_dir }}/vault
