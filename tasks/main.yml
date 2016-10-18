@@ -27,11 +27,58 @@
     state=present
   tags: vault
 
+- name: Check if Vault is already installed
+  stat: >
+    path={{ vault_install_dir }}/vault
+  register: vault_bin
+  changed_when: false
+  tags: vault
+
+- name: Get currently installed Vault version
+  shell: "{{ vault_install_dir }}/vault version | grep '^Vault' | cut -d' ' -f2 | sed -e 's/^v//'"
+  register: installed_vault_version
+  when: vault_bin.stat.exists
+  changed_when: false
+  tags: vault
+
+- name: Get list of installed Vault files
+  shell: ls -1 {{ vault_install_dir }}/vault*
+  register: vault_files
+  when:
+    - not installed_vault_version | skipped
+  changed_when: false
+  tags: vault
+
 - name: Download Vault
   get_url: >
     url={{ vault_url }}
     dest={{ vault_download_dir }}/vault.zip
     sha256sum={{ vault_sha256sum }}
+  tags: vault
+
+- name: Vault is upgrading
+  command: echo 1
+  register: vault_upgrading
+  when:
+    - not installed_vault_version | skipped
+    - installed_vault_version.stdout | version_compare(vault_version, operator='lt', strict=True)
+
+- name: Stop Vault if upgrading
+  service: name={{ vault_service_name }} state=stopped
+  when:
+    - not vault_upgrading | skipped
+  changed_when: false
+  tags: vault
+
+- name: Remove old Vault files if upgrading
+  file: >
+    path={{ item }}
+    state=absent
+  with_items:
+    - "{{ vault_files.stdout_lines | default([]) }}"
+  when:
+    - not vault_upgrading | skipped
+  changed_when: false
   tags: vault
 
 - name: Unzip Vault to installation directory
@@ -77,4 +124,10 @@
 
 - name: Ensure Vault service is started and enabled on boot
   service: name={{ vault_service_name }} state=started enabled=yes
+  tags: vault
+
+- name: Restart vault on upgrade
+  service: name={{ vault_service_name }} state=restarted
+  when: not vault_upgrading | skipped
+  changed_when: false
   tags: vault
