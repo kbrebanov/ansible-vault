@@ -148,7 +148,7 @@
 - name: Give vault access to mlock syscall
   become: yes
   capabilities:
-    path: {{ vault_install_dir }}/vault"
+    path: "{{ vault_install_dir }}/vault"
     capability: 'cap_ipc_lock+ep'
     state: present
   tags:
