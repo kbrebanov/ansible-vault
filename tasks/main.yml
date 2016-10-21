@@ -3,58 +3,71 @@
 
 - name: Include distribution specific variables
   include_vars: "{{ ansible_distribution }}.yml"
-  tags: vault
+  tags:
+    - vault
 
 - include: CentOS.yml
   when: ansible_distribution == "CentOS"
-  tags: vault
+  tags:
+    - vault
 
 - include: Ubuntu.yml
   when: ansible_distribution == "Ubuntu"
-  tags: vault
+  tags:
+    - vault
 
 - name: Create Vault group
-  group: name={{ vault_group }} system=yes state=present
-  tags: vault
+  group:
+    name: "{{ vault_group }}"
+    system: yes
+    state: present
+  tags:
+    - vault
 
 - name: Create Vault user
-  user: >
-    name={{ vault_user }}
-    shell=/bin/false
-    createhome=no
-    group={{ vault_group }}
-    system=yes
-    state=present
-  tags: vault
+  become: yes
+  user:
+    name: "{{ vault_user }}"
+    shell: /bin/false
+    createhome: no
+    group: {{ vault_group }}
+    system: yes
+    state: present
+  tags:
+    - vault
 
 - name: Check if Vault is already installed
-  stat: >
-    path={{ vault_install_dir }}/vault
+  stat:
+    path: "{{ vault_install_dir }}/vault"
   register: vault_bin
   changed_when: false
-  tags: vault
+  tags:
+    - vault
 
 - name: Get currently installed Vault version
   shell: "{{ vault_install_dir }}/vault version | grep '^Vault' | cut -d' ' -f2 | sed -e 's/^v//'"
   register: installed_vault_version
   when: vault_bin.stat.exists
   changed_when: false
-  tags: vault
+  tags:
+    - vault
 
 - name: Get list of installed Vault files
-  shell: ls -1 {{ vault_install_dir }}/vault*
+  command: ls -1 {{ vault_install_dir }}/vault*
   register: vault_files
-  when:
-    - not installed_vault_version | skipped
+  when: not installed_vault_version | skipped
   changed_when: false
-  tags: vault
+  tags:
+    - vault
 
 - name: Download Vault
-  get_url: >
-    url={{ vault_url }}
-    dest={{ vault_download_dir }}/vault.zip
-    sha256sum={{ vault_sha256sum }}
-  tags: vault
+  become: yes
+  get_url:
+    url: "{{ vault_url }}"
+    dest: "{{ vault_download_dir }}/vault.zip"
+    sha256sum: "{{ vault_sha256sum }}"
+  tags:
+    - vault
 
 - name: Vault is upgrading
   command: echo 1
@@ -62,72 +75,100 @@
   when:
     - not installed_vault_version | skipped
     - installed_vault_version.stdout | version_compare(vault_version, operator='lt', strict=True)
+  tags:
+    - vault
 
 - name: Stop Vault if upgrading
-  service: name={{ vault_service_name }} state=stopped
-  when:
-    - not vault_upgrading | skipped
+  become: yes
+  service:
+    name: "{{ vault_service_name }}"
+    state: stopped
+  when: not vault_upgrading | skipped
   changed_when: false
-  tags: vault
+  tags:
+    - vault
 
 - name: Remove old Vault files if upgrading
-  file: >
-    path={{ item }}
-    state=absent
+  become: yes
+  file:
+    path: "{{ item }}"
+    state: absent
   with_items:
     - "{{ vault_files.stdout_lines | default([]) }}"
-  when:
-    - not vault_upgrading | skipped
+  when: not vault_upgrading | skipped
   changed_when: false
-  tags: vault
+  tags:
+    - vault
 
 - name: Unzip Vault to installation directory
+  become: yes
   command: unzip {{ vault_download_dir }}/vault.zip -d {{ vault_install_dir }}
   args:
     creates: "{{ vault_install_dir }}/vault"
-  tags: vault
+  tags:
+    - vault
 
 - name: Create Vault configuration directory
-  file: >
-    path={{ vault_config_dir }}
-    owner=root
-    group=root
-    mode=0755
-    state=directory
-  tags: vault
+  become: yes
+  file:
+    path: "{{ vault_config_dir }}"
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+  tags:
+    - vault
 
 - name: Create Vault upstart configuration
-  template: >
-    src=vault.conf.j2
-    dest=/etc/init/vault.conf
-    owner=root
-    group=root
-    mode=0644
-  notify: restart vault
-  tags: vault
+  become: yes
+  template:
+    src: vault.conf.j2
+    dest: /etc/init/vault.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart vault
+  tags:
+    - vault
 
 - name: Create Vault configuration file
-  template: >
-    src=vault.hcl.j2
-    dest={{ vault_config_dir }}/vault.hcl
-    owner=root
-    group=vault
-    mode=0640
-  notify: restart vault
-  tags: vault
+  become: yes
+  template:
+    src: vault.hcl.j2
+    dest: "{{ vault_config_dir }}/vault.hcl"
+    owner: root
+    group: vault
+    mode: 0640
+  notify:
+    - restart vault
+  tags:
+    - vault
 
 - name: Give vault access to mlock syscall
-  capabilities: >
-    path={{ vault_install_dir }}/vault
-    capability='cap_ipc_lock+ep'
-    state=present
+  become: yes
+  capabilities:
+    path: {{ vault_install_dir }}/vault"
+    capability: 'cap_ipc_lock+ep'
+    state: present
+  tags:
+    - vault
 
 - name: Ensure Vault service is started and enabled on boot
-  service: name={{ vault_service_name }} state=started enabled=yes
-  tags: vault
+  become: yes
+  service:
+    name: "{{ vault_service_name }}"
+    state: started
+    enabled: yes
+  tags:
+    - vault
 
 - name: Restart vault on upgrade
-  service: name={{ vault_service_name }} state=restarted
+  become: yes
+  service:
+    name: "{{ vault_service_name }}"
+    state: restarted
   when: not vault_upgrading | skipped
   changed_when: false
-  tags: vault
+  tags:
+    - vault

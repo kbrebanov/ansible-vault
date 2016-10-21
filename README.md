@@ -9,13 +9,13 @@ Installs and configures Vault
 Requirements
 ------------
 
-This role requires Ansible 1.6 or higher.
+This role requires Ansible 1.9 or higher.
 
 Role Variables
 --------------
 
 | Name                                   | Default                                                          | Description                                                                                                                   |
-|----------------------------------------|------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|:---------------------------------------|:-----------------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------|
 | vault_version                          | 0.6.2                                                            | Version of Vault to install                                                                                                   |
 | vault_sha256sum                        | 91432c812b1264306f8d1ecf7dd237c3d7a8b2b6aebf4f887e487c4e7f69338c | SHA 256 checksum of package                                                                                                   |
 | vault_backend                          | consul                                                           | Configures the storage backend where Vault data is stored                                                                     |
@@ -71,7 +71,7 @@ Example Playbook
 ----------------
 
 Install Vault using Consul backend
-```
+```yaml
 - hosts: all
   roles:
     - kbrebanov.vault
