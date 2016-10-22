@@ -69,6 +69,15 @@
   tags:
     - vault
 
+- name: Output Vault version variable
+  debug:
+    var: installed_vault_version
+  when:
+    - not installed_vault_version | skipped
+  changed_when: false
+  tags:
+    - vault
+
 - name: Remove Vault files if version is different
   become: yes
   file:
