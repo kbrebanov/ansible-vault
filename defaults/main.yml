@@ -4,7 +4,7 @@
 vault_version: 0.6.2
 vault_sha256sum: 91432c812b1264306f8d1ecf7dd237c3d7a8b2b6aebf4f887e487c4e7f69338c
 
-vault_backend: consul
+vault_backend: inmem
 vault_disable_mlock: false
 vault_default_lease_ttl: "720h"
 vault_max_lease_ttl: "720h"
