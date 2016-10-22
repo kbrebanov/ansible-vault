@@ -42,7 +42,7 @@ script:
   - container_id=$(mktemp)
 
   # Run container in detached state
-  - docker run --detach --volume="${PWD}":/etc/ansible/roles/ansible-vault:ro ${run_opts} ${distribution}-${version}:ansible "${init}" > "${container_id}"
+  - docker run --cap-add IPC_LOCK --detach --volume="${PWD}":/etc/ansible/roles/ansible-vault:ro ${run_opts} ${distribution}-${version}:ansible "${init}" > "${container_id}"
 
   # Display Ansible version
   - docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible --version
