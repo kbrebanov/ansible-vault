@@ -30,7 +30,7 @@
     name: "{{ vault_user }}"
     shell: /bin/false
     createhome: no
-    group: {{ vault_group }}
+    group: "{{ vault_group }}"
     system: yes
     state: present
   tags:
