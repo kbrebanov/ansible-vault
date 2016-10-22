@@ -45,6 +45,7 @@
     - vault
 
 - name: Get currently installed Vault version
+  become: yes
   shell: "{{ vault_install_dir }}/vault version | grep '^Vault' | cut -d' ' -f2 | sed -e 's/^v//'"
   register: installed_vault_version
   when: vault_bin.stat.exists
