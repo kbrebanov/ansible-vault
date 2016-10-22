@@ -53,7 +53,7 @@
     - vault
 
 - name: Get list of installed Vault files
-  command: ls -1 {{ vault_install_dir }}/vault*
+  shell: ls -1 {{ vault_install_dir }}/vault*
   register: vault_files
   when: not installed_vault_version | skipped
   changed_when: false
