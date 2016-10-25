@@ -86,9 +86,11 @@
 
 - name: Unzip Vault to installation directory
   become: yes
-  command: unzip {{ vault_download_dir }}/vault.zip -d {{ vault_install_dir }}
-  args:
+  unarchive:
+    src: "{{ vault_download_dir }}/vault.zip"
+    dest: "{{ vault_install_dir }}"
     creates: "{{ vault_install_dir }}/vault"
+    copy: no
   tags:
     - vault
 
