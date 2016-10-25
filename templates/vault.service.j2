@@ -1,0 +1,13 @@
+[Unit]
+Description=Vault server
+After=network.target
+
+[Service]
+ExecStart={{ vault_install_dir }}/vault server -config {{ vault_config_dir }}/vault.hcl
+StandardOutput=journal
+Restart=on-failure
+User={{ vault_user }}
+Group={{ vault_group }}
+
+[Install]
+WantedBy=multi-user.target

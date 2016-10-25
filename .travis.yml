@@ -12,10 +12,10 @@ env:
       version: 14.04
       init: /sbin/init
       run_opts: ""
-#   - distribution: ubuntu
-#     version: 16.04
-#     init: /bin/systemd
-#     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    - distribution: ubuntu
+      version: 16.04
+      init: /bin/systemd
+      run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
 #   - distribution: centos
 #     version: 6
 #     init: /sbin/init
