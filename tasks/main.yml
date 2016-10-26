@@ -115,6 +115,7 @@
     mode: 0644
   when: ansible_distribution_release|lower == 'xenial'
   notify:
+    - reload systemd
     - restart vault
   tags:
     - vault
