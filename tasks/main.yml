@@ -86,9 +86,11 @@
 
 - name: Unzip Vault to installation directory
   become: yes
-  command: unzip {{ vault_download_dir }}/vault.zip -d {{ vault_install_dir }}
-  args:
+  unarchive:
+    src: "{{ vault_download_dir }}/vault.zip"
+    dest: "{{ vault_install_dir }}"
     creates: "{{ vault_install_dir }}/vault"
+    copy: no
   tags:
     - vault
 
@@ -103,6 +105,21 @@
   tags:
     - vault
 
+- name: Create Vault systemd configuration
+  become: yes
+  template:
+    src: vault.service.j2
+    dest: /etc/systemd/system/vault.service
+    owner: root
+    group: root
+    mode: 0644
+  when: ansible_distribution_release|lower == 'xenial'
+  notify:
+    - reload systemd
+    - restart vault
+  tags:
+    - vault
+
 - name: Create Vault upstart configuration
   become: yes
   template:
@@ -111,6 +128,7 @@
     owner: root
     group: root
     mode: 0644
+  when: ansible_distribution_release|lower == 'trusty'
   notify:
     - restart vault
   tags:
