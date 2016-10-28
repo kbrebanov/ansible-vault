@@ -9,6 +9,8 @@ vault_disable_mlock: false
 vault_default_lease_ttl: "720h"
 vault_max_lease_ttl: "720h"
 vault_telemetry: false
+vault_redirect_addr: ''
+vault_cluster_addr: ''
 
 vault_backend_consul_advertise_addr: ''
 vault_backend_consul_path: "vault/"
