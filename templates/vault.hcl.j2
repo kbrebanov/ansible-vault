@@ -26,9 +26,6 @@ listener "tcp" {
 
 {% if vault_backend == "consul" %}
 backend "consul" {
-{% if vault_backend_consul_advertise_addr %}
-  advertise_addr = "{{ vault_backend_consul_advertise_addr }}"
-{% endif %}
   path = "{{ vault_backend_consul_path }}"
 {% if vault_backend_consul_address %}
   address = "{{ vault_backend_consul_address }}"
@@ -67,9 +64,6 @@ backend "consul" {
 
 {% if vault_backend == "zookeeper" %}
 backend "zookeeper" {
-{% if vault_backend_zookeeper_advertise_addr %}
-  advertise_addr = "{{ vault_backend_zookeeper_advertise_addr }}"
-{% endif %}
   path = "{{ vault_backend_zookeeper_path }}"
   address = "{{ vault_backend_zookeeper_address }}"
 {% if vault_backend_zookeeper_redirect_addr %}
@@ -83,9 +77,6 @@ backend "zookeeper" {
 
 {% if vault_backend == "etcd" %}
 backend "etcd" {
-{% if vault_backend_etcd_advertise_addr %}
-  advertise_addr = "{{ vault_backend_etcd_advertise_addr }}"
-{% endif %}
   path = "{{ vault_backend_etcd_path }}"
   address = "{{ vault_backend_etcd_address }}"
 {% if vault_backend_etcd_redirect_addr %}
@@ -99,9 +90,6 @@ backend "etcd" {
 
 {% if vault_backend == "s3" %}
 backend "s3" {
-{% if vault_backend_s3_advertise_addr %}
-  advertise_addr = "{{ vault_backend_s3_advertise_addr }}"
-{% endif %}
   bucket = "{{ vault_backend_s3_bucket }}"
 {% if vault_backend_s3_access_key %}
   access_key = "{{ vault_backend_s3_access_key }}"
@@ -120,9 +108,6 @@ backend "s3" {
 
 {% if vault_backend == "mysql" %}
 backend "mysql" {
-{% if vault_backend_mysql_advertise_addr %}
-  advertise_addr = "{{ vault_backend_mysql_advertise_addr }}"
-{% endif %}
   username = "{{ vault_backend_mysql_username }}"
   password = "{{ vault_backend_mysql_password }}"
   address = "{{ vault_backend_mysql_address }}"
