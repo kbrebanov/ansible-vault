@@ -9,8 +9,6 @@ vault_disable_mlock: false
 vault_default_lease_ttl: "720h"
 vault_max_lease_ttl: "720h"
 vault_telemetry: false
-vault_redirect_addr: ''
-vault_cluster_addr: ''
 
 vault_backend_consul_advertise_addr: ''
 vault_backend_consul_path: "vault/"
@@ -22,14 +20,20 @@ vault_backend_consul_tls_skip_verify: false
 vault_backend_consul_tls_ca_file: ''
 vault_backend_consul_tls_cert_file: ''
 vault_backend_consul_tls_key_file: ''
+vault_backend_consul_redirect_addr: ''
+vault_backend_consul_cluster_addr: ''
 
 vault_backend_zookeeper_advertise_addr: ''
 vault_backend_zookeeper_path: "vault/"
 vault_backend_zookeeper_address: "http://localhost:4001"
+vault_backend_zookeeper_redirect_addr: ''
+vault_backend_zookeeper_cluster_addr: ''
 
 vault_backend_etcd_advertise_addr: ''
 vault_backend_etcd_path: "vault/"
 vault_backend_etcd_address: "localhost:2181"
+vault_backend_etcd_redirect_addr: ''
+vault_backend_etcd_cluster_addr: ''
 
 vault_backend_s3_advertise_addr: ''
 vault_backend_s3_bucket: ''

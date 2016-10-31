@@ -56,11 +56,11 @@ backend "consul" {
 {% if vault_backend_consul_tls_key_file %}
   tls_key_file = "{{ vault_backend_consul_tls_key_file }}"
 {% endif %}
-{% if vault_redirect_addr %}
-  redirect_addr = "{{ vault_redirect_addr }}"
+{% if vault_backend_consul_redirect_addr %}
+  redirect_addr = "{{ vault_backend_consul_redirect_addr }}"
 {% endif %}
-{% if vault_cluster_addr %}
-  cluster_addr = "{{ vault_cluster_addr }}"
+{% if vault_backend_consul_cluster_addr %}
+  cluster_addr = "{{ vault_backend_consul_cluster_addr }}"
 {% endif %}
 }
 {% endif %}
@@ -72,11 +72,11 @@ backend "zookeeper" {
 {% endif %}
   path = "{{ vault_backend_zookeeper_path }}"
   address = "{{ vault_backend_zookeeper_address }}"
-{% if vault_redirect_addr %}
-  redirect_addr = "{{ vault_redirect_addr }}"
+{% if vault_backend_zookeeper_redirect_addr %}
+  redirect_addr = "{{ vault_backend_zookeeper_redirect_addr }}"
 {% endif %}
-{% if vault_cluster_addr %}
-  cluster_addr = "{{ vault_cluster_addr }}"
+{% if vault_backend_zookeeper_cluster_addr %}
+  cluster_addr = "{{ vault_backend_zookeeper_cluster_addr }}"
 {% endif %}
 }
 {% endif %}
@@ -88,11 +88,11 @@ backend "etcd" {
 {% endif %}
   path = "{{ vault_backend_etcd_path }}"
   address = "{{ vault_backend_etcd_address }}"
-{% if vault_redirect_addr %}
-  redirect_addr = "{{ vault_redirect_addr }}"
+{% if vault_backend_etcd_redirect_addr %}
+  redirect_addr = "{{ vault_backend_etcd_redirect_addr }}"
 {% endif %}
-{% if vault_cluster_addr %}
-  cluster_addr = "{{ vault_cluster_addr }}"
+{% if vault_backend_etcd_cluster_addr %}
+  cluster_addr = "{{ vault_backend_etcd_cluster_addr }}"
 {% endif %}
 }
 {% endif %}
