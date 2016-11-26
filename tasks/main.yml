@@ -105,30 +105,21 @@
   tags:
     - vault
 
-- name: Create Vault systemd configuration
   become: yes
   template:
-    src: vault.service.j2
-    dest: /etc/systemd/system/vault.service
     owner: root
     group: root
     mode: 0644
-  when: ansible_distribution_release|lower == 'xenial'
   notify:
-    - reload systemd
     - restart vault
   tags:
     - vault
 
-- name: Create Vault upstart configuration
   become: yes
   template:
-    src: vault.conf.j2
-    dest: /etc/init/vault.conf
     owner: root
     group: root
     mode: 0644
-  when: ansible_distribution_release|lower == 'trusty'
   notify:
     - restart vault
   tags:
