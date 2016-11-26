@@ -105,8 +105,11 @@
   tags:
     - vault
 
+- name: Create Vault upstart configuration
   become: yes
   template:
+    src: vault.conf.j2
+    dest: /etc/init/vault.conf
     owner: root
     group: root
     mode: 0644
@@ -114,9 +117,13 @@
     - restart vault
   tags:
     - vault
+  when: ansible_service_mgr == "upstart"
 
+- name: Create Vault systemd configuration
   become: yes
   template:
+    src: vault.service.j2
+    dest: /lib/systemd/system/vault.service
     owner: root
     group: root
     mode: 0644
@@ -124,6 +131,7 @@
     - restart vault
   tags:
     - vault
+  when: ansible_service_mgr == "systemd"
 
 - name: Create Vault configuration file
   become: yes
