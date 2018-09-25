@@ -1,13 +1,16 @@
 [Unit]
 Description=Vault server
-After=network.target
+Requires=network-online.target
+After=network-online.target consul.service
 
 [Service]
-ExecStart={{ vault_install_dir }}/vault server -config {{ vault_config_dir }}/vault.hcl
-StandardOutput=journal
+EnvironmentFile=-/etc/sysconfig/vault
 Restart=on-failure
+PIDFile={{ vault_pid_file }}
+Type=simple
 User={{ vault_user }}
 Group={{ vault_group }}
+ExecStart={{ vault_install_dir }}/vault server -config={{ vault_config_dir }}/vault.hcl > {{ vault_log_file }} 2>&1
 
 [Install]
 WantedBy=multi-user.target
