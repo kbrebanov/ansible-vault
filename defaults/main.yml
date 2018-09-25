@@ -50,7 +50,9 @@ vault_backend_file_path: ''
 vault_listener_tcp_address: "127.0.0.1:8200"
 vault_listener_tcp_tls_disable: true
 vault_listener_tcp_tls_cert_file: ''
+vault_listener_tcp_tls_cert_local_file: ''
 vault_listener_tcp_tls_key_file: ''
+vault_listener_tcp_tls_key_local_file: ''
 vault_listener_tcp_tls_min_version: tls12
 
 vault_telemetry_statsite_address: ''
